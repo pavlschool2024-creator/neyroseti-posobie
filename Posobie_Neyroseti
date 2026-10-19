@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Нейросети на уроках информатики | Электронное пособие</title>
+<style>
+:root{
+  --bg:#0f172a;
+  --bg2:#1e293b;
+  --card:#1e293b;
+  --accent:#8b5cf6;
+  --accent2:#06b6d4;
+  --neon:#22d3ee;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+header{
+  background:linear-gradient(135deg,#0f172a 0%,#312e81 50%,#1e1b4b 100%);
+  padding:60px 20px;
+  text-align:center;
+  border-bottom:3px solid var(--neon);
+  position:relative;
+  overflow:hidden;
+}
+header::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background-image:
+    radial-gradient(circle at 20% 30%,rgba(139,92,246,0.3) 0%,transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(6,182,212,0.3) 0%,transparent 40%);
+  pointer-events:none;
+}
+header h1{
+  font-size:2.4rem;
+  background:linear-gradient(90deg,var(--neon),var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:15px;
+  position:relative;
+}
+header .subtitle{
+  font-size:1.1rem;
+  color:var(--muted);
+  margin-bottom:20px;
+  position:relative;
+}
+.author-box{
+  display:inline-block;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--accent);
+  padding:15px 30px;
+  border-radius:12px;
+  margin-top:20px;
+  position:relative;
+  backdrop-filter:blur(10px);
+}
+.author-box p{margin:3px 0;font-size:0.95rem}
+.author-box strong{color:var(--neon)}
+.badge{
+  display:inline-block;
+  background:var(--accent);
+  color:white;
+  padding:5px 15px;
+  border-radius:20px;
+  font-size:0.85rem;
+  margin-top:15px;
+  position:relative;
+}
+nav{
+  background:var(--bg2);
+  padding:15px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:1px solid rgba(139,92,246,0.3);
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+nav a{
+  color:var(--text);
+  text-decoration:none;
+  padding:8px 15px;
+  border-radius:8px;
+  font-size:0.9rem;
+  transition:0.3s;
+  border:1px solid transparent;
+}
+nav a:hover{
+  background:var(--accent);
+  border-color:var(--neon);
+  color:white;
+}
+main{max-width:1100px;margin:0 auto;padding:40px 20px}
+section{
+  background:var(--card);
+  padding:35px;
+  margin-bottom:30px;
+  border-radius:16px;
+  border:1px solid rgba(139,92,246,0.2);
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+h2{
+  color:var(--neon);
+  font-size:1.7rem;
+  margin-bottom:20px;
+  padding-bottom:10px;
+  border-bottom:2px solid var(--accent);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+h2 .num{
+  background:var(--accent);
+  color:white;
+  width:35px;height:35px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1rem;
+}
+h3{color:var(--accent2);margin:20px 0 10px}
+p{margin-bottom:12px;color:var(--text)}
+ul,ol{margin:10px 0 15px 25px}
+li{margin-bottom:8px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  margin:20px 0;
+}
+.card{
+  background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(6,182,212,0.1));
+  padding:20px;
+  border-radius:12px;
+  border-left:4px solid var(--accent);
+  transition:0.3s;
+}
+.card:hover{transform:translateY(-5px);border-left-color:var(--neon)}
+.card h4{color:var(--neon);margin-bottom:10px;font-size:1.1rem}
+.card .icon{font-size:2rem;margin-bottom:10px}
+
+/* Инструменты */
+.tools-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:20px 0;
+  background:rgba(0,0,0,0.2);
+  border-radius:8px;
+  overflow:hidden;
+}
+.tools-table th,.tools-table td{
+  padding:12px 15px;
+  text-align:left;
+  border-bottom:1px solid rgba(139,92,246,0.2);
+}
+.tools-table th{
+  background:var(--accent);
+  color:white;
+  font-weight:600;
+}
+.tools-table tr:hover{background:rgba(139,92,246,0.1)}
+
+/* Этапы */
+.stage{
+  background:rgba(0,0,0,0.3);
+  padding:20px;
+  margin:15px 0;
+  border-radius:10px;
+  border-left:4px solid var(--accent2);
+  position:relative;
+}
+.stage-num{
+  position:absolute;
+  top:-15px;left:20px;
+  background:var(--accent2);
+  color:var(--bg);
+  padding:5px 15px;
+  border-radius:20px;
+  font-weight:bold;
+  font-size:0.85rem;
+}
+.stage h4{margin-top:15px;color:var(--neon)}
+
+/* Код */
+.code-block{
+  background:#0a0e27;
+  border:1px solid var(--accent);
+  border-radius:8px;
+  padding:20px;
+  margin:15px 0;
+  font-family:'Consolas','Courier New',monospace;
+  font-size:0.9rem;
+  overflow-x:auto;
+  position:relative;
+}
+.code-block::before{
+  content:'Python';
+  position:absolute;
+  top:5px;right:10px;
+  background:var(--accent);
+  color:white;
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:0.75rem;
+  font-family:'Segoe UI',sans-serif;
+}
+.code-block .kw{color:#c084fc}
+.code-block .str{color:#86efac}
+.code-block .fn{color:#fbbf24}
+.code-block .com{color:#64748b;font-style:italic}
+.code-block .num{color:#f472b6}
+
+/* Интерактив: анализатор промптов */
+.prompt-analyzer{
+  background:linear-gradient(135deg,#1e1b4b,#0f172a);
+  padding:25px;
+  border-radius:12px;
+  border:2px solid var(--accent);
+  margin:20px 0;
+}
+.prompt-analyzer textarea{
+  width:100%;
+  min-height:100px;
+  background:#0a0e27;
+  color:var(--text);
+  border:1px solid var(--accent);
+  border-radius:8px;
+  padding:12px;
+  font-family:inherit;
+  font-size:0.95rem;
+  resize:vertical;
+}
+.prompt-analyzer button{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:white;
+  border:none;
+  padding:12px 30px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+  font-size:1rem;
+  transition:0.3s;
+}
+.prompt-analyzer button:hover{transform:scale(1.05);box-shadow:0 0 20px var(--neon)}
+.prompt-result{
+  margin-top:20px;
+  padding:15px;
+  background:rgba(0,0,0,0.4);
+  border-radius:8px;
+  border-left:4px solid var(--success);
+}
+.check-item{
+  padding:8px 12px;
+  margin:5px 0;
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.check-item.ok{background:rgba(16,185,129,0.15);color:var(--success)}
+.check-item.no{background:rgba(239,68,68,0.15);color:var(--danger)}
+.score{
+  font-size:1.5rem;
+  font-weight:bold;
+  color:var(--neon);
+  margin-top:10px;
+}
+
+/* Калькулятор ИМТ */
+.imt-calc{
+  background:linear-gradient(135deg,#064e3b,#0f172a);
+  padding:25px;
+  border-radius:12px;
+  border:2px solid var(--success);
+  margin:20px 0;
+}
+.imt-calc input{
+  background:#0a0e27;
+  color:var(--text);
+  border:1px solid var(--success);
+  padding:10px;
+  border-radius:6px;
+  width:100%;
+  margin:5px 0;
+  font-size:1rem;
+}
+.imt-calc button{
+  background:var(--success);
+  color:white;
+  border:none;
+  padding:10px 25px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-top:10px;
+}
+.imt-result{
+  margin-top:15px;
+  padding:15px;
+  background:rgba(0,0,0,0.4);
+  border-radius:8px;
+  font-size:1.1rem;
+}
+
+/* Таблица оценивания */
+.eval-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:15px 0;
+}
+.eval-table th,.eval-table td{
+  padding:12px;
+  border:1px solid rgba(139,92,246,0.3);
+  text-align:left;
+}
+.eval-table th{background:var(--accent);color:white}
+.eval-table tr:nth-child(even){background:rgba(139,92,246,0.05)}
+
+/* Ход занятия */
+.lesson-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:15px 0;
+}
+.lesson-table th,.lesson-table td{
+  padding:12px;
+  border:1px solid rgba(6,182,212,0.3);
+  text-align:left;
+}
+.lesson-table th{background:var(--accent2);color:var(--bg)}
+.lesson-table tr:hover{background:rgba(6,182,212,0.1)}
+
+/* Памятка */
+.tip-box{
+  background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(139,92,246,0.1));
+  border:2px dashed var(--warning);
+  padding:20px;
+  border-radius:12px;
+  margin:15px 0;
+}
+.tip-box h4{color:var(--warning);margin-bottom:10px}
+
+/* Безопасность */
+.safety-box{
+  background:linear-gradient(135deg,rgba(239,68,68,0.1),rgba(139,92,246,0.1));
+  border-left:5px solid var(--danger);
+  padding:20px;
+  border-radius:8px;
+  margin:15px 0;
+}
+
+footer{
+  background:#0a0e27;
+  padding:30px 20px;
+  text-align:center;
+  color:var(--muted);
+  border-top:2px solid var(--accent);
+  margin-top:40px;
+}
+footer strong{color:var(--neon)}
+
+@media(max-width:768px){
+  header h1{font-size:1.6rem}
+  section{padding:20px}
+  nav a{font-size:0.8rem;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Нейросети на уроках информатики</h1>
+  <p class="subtitle">от генерации кода до цифрового арта</p>
+  <div class="badge">Электронное методическое пособие</div>
+  <div class="author-box">
+    <p><strong>Автор:</strong> Уаисова Алия Токеновна</p>
+    <p>Учитель информатики</p>
+    <p>КГУ «Средняя общеобразовательная школа №30 г. Павлодара»</p>
+    <p>📧 aliyatz@mail.ru</p>
+    <p style="margin-top:10px;font-size:0.85rem;color:var(--muted)">
+      Фестиваль педагогических идей – 2026<br>
+      Направление: «Палитра мастерства» (информатика)
+    </p>
+  </div>
+</header>
+
+<nav>
+  <a href="#annotation">Аннотация</a>
+  <a href="#goal">Цель и задачи</a>
+  <a href="#directions">Направления</a>
+  <a href="#tools">Инструменты</a>
+  <a href="#practice">Практика</a>
+  <a href="#tasks">Задания</a>
+  <a href="#prompt">Анализатор промптов</a>
+  <a href="#imt">Калькулятор ИМТ</a>
+  <a href="#lesson">Ход занятия</a>
+  <a href="#tips">Памятка</a>
+  <a href="#eval">Оценивание</a>
+  <a href="#safety">Безопасность</a>
+</nav>
+
+<main>
+
+<!-- АННОТАЦИЯ -->
+<section id="annotation">
+  <h2><span class="num">1</span> Аннотация и актуальность</h2>
+  <p>Методическая разработка посвящена применению технологий <strong>искусственного интеллекта</strong> и <strong>нейросетей</strong> в преподавании информатики. В работе рассматриваются возможности использования нейросетевых инструментов для изучения основ программирования, генерации и анализа программного кода, поиска ошибок, создания цифровых изображений и разработки творческих проектов.</p>
+  <p>Особое внимание уделяется практической деятельности учащихся, развитию алгоритмического мышления, цифровой грамотности, самостоятельности и критического отношения к результатам, полученным с помощью искусственного интеллекта.</p>
+  
+  <h3>🔥 Актуальность</h3>
+  <p>Искусственный интеллект становится важной частью цифровой среды. Использование нейросетей на уроках информатики позволяет сделать обучение более <strong>наглядным, практико-ориентированным и интересным</strong> для учащихся. Нейросети помогают школьникам не только создавать изображения и тексты, но и разрабатывать программный код, находить ошибки, анализировать информацию и реализовывать собственные цифровые проекты.</p>
+  
+  <div class="tip-box">
+    <h4>💡 Главная задача учителя</h4>
+    <p>Научить учащихся применять искусственный интеллект осознанно, критически оценивать результаты его работы и понимать, что нейросеть является <strong>помощником, а не заменой</strong> собственных знаний и умений.</p>
+  </div>
+</section>
+
+<!-- ЦЕЛЬ И ЗАДАЧИ -->
+<section id="goal">
+  <h2><span class="num">2</span> Цель и задачи методики</h2>
+  <h3>🎯 Цель</h3>
+  <p>Формирование цифровых компетенций учащихся посредством интеграции нейросетевых технологий в обучение информатике — от решения задач по программированию до создания цифровых художественных проектов.</p>
+  
+  <h3>📋 Задачи</h3>
+  <div class="grid">
+    <div class="card">
+      <div class="icon">🧩</div>
+      <h4>Познакомить</h4>
+      <p>С возможностями нейросетей и принципами их использования.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🧠</div>
+      <h4>Развивать мышление</h4>
+      <p>Алгоритмическое и логическое мышление учащихся.</p>
+    </div>
+    <div class="card">
+      <div class="icon">💻</div>
+      <h4>Формировать навыки</h4>
+      <p>Создания, анализа и отладки программного кода.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎨</div>
+      <h4>Развивать творчество</h4>
+      <p>Посредством генерации цифровых изображений.</p>
+    </div>
+    <div class="card">
+      <div class="icon">✍️</div>
+      <h4>Научить промптам</h4>
+      <p>Составлять эффективные запросы к нейросетям.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🛡️</div>
+      <h4>Цифровая этика</h4>
+      <p>Проверка информации и безопасная работа с ИИ.</p>
+    </div>
+  </div>
+</section>
+
+<!-- НАПРАВЛЕНИЯ -->
+<section id="directions">
+  <h2><span class="num">3</span> Основные направления применения</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="icon">⚙️</div>
+      <h4>1. Генерация кода</h4>
+      <p>Учащиеся формулируют задачу, получают пример кода, изучают алгоритм, тестируют программу и самостоятельно исправляют ошибки.</p>
+      <p><em>Пример:</em> программа на Python для вычисления среднего арифметического.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔍</div>
+      <h4>2. Поиск и исправление ошибок</h4>
+      <p>Нейросеть помогает объяснить сообщение об ошибке, найти возможную причину сбоя и предложить варианты исправления.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🖼️</div>
+      <h4>3. Создание цифрового арта</h4>
+      <p>Учащиеся создают изображения по текстовому описанию, сравнивают результаты и совершенствуют запросы.</p>
+      <p><em>Пример:</em> «Школа будущего», «Город с ИИ».</p>
+    </div>
+    <div class="card">
+      <div class="icon">🚀</div>
+      <h4>4. Разработка проектов</h4>
+      <p>Объединение программирования, графики и текста для создания презентаций, интерактивных историй, веб-страниц.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ИНСТРУМЕНТЫ -->
+<section id="tools">
+  <h2><span class="num">4</span> Примеры инструментов</h2>
+  <table class="tools-table">
+    <thead>
+      <tr><th>Инструмент</th><th>Применение на уроке</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ChatGPT</strong></td><td>Объяснение алгоритмов, генерация и анализ кода</td></tr>
+      <tr><td><strong>Google Gemini</strong></td><td>Решение учебных задач, анализ и создание материалов</td></tr>
+      <tr><td><strong>Microsoft Copilot</strong></td><td>Помощь в работе с кодом и цифровым контентом</td></tr>
+      <tr><td><strong>Canva</strong></td><td>Создание плакатов, презентаций и графических проектов</td></tr>
+      <tr><td><strong>Scratch</strong></td><td>Изучение алгоритмов и визуального программирования</td></tr>
+    </tbody>
+  </table>
+  <div class="safety-box">
+    <strong>⚠️ Важно:</strong> Доступность функций зависит от возраста пользователя, настроек аккаунта и условий использования конкретного сервиса. Для школьников необходимо соблюдать правила образовательной организации и требования к защите персональных данных.
+  </div>
+</section>
+
+<!-- ПРАКТИЧЕСКАЯ ЧАСТЬ -->
+<section id="practice">
+  <h2><span class="num">5</span> Практическая часть методики</h2>
+  <p>Работа строится по принципу <strong>«От идеи к готовому цифровому продукту»</strong>.</p>
+  
+  <div class="stage">
+    <span class="stage-num">Этап 1</span>
+    <h4>Постановка задачи</h4>
+    <p>Учащиеся определяют, что необходимо создать: программу, изображение или цифровой проект.</p>
+  </div>
+  <div class="stage">
+    <span class="stage-num">Этап 2</span>
+    <h4>Работа с нейросетью</h4>
+    <p>Формулируют точный запрос, указывают цель, условия, формат результата и ограничения.</p>
+  </div>
+  <div class="stage">
+    <span class="stage-num">Этап 3</span>
+    <h4>Анализ результата</h4>
+    <p>Проверяют правильность кода, соответствие изображения заданию, выявляют неточности и исправляют их.</p>
+  </div>
+  <div class="stage">
+    <span class="stage-num">Этап 4</span>
+    <h4>Доработка</h4>
+    <p>Учащиеся вносят изменения самостоятельно, экспериментируют с запросами и улучшают результат.</p>
+  </div>
+  <div class="stage">
+    <span class="stage-num">Этап 5</span>
+    <h4>Представление проекта</h4>
+    <p>Демонстрируют результат, объясняют ход работы и отмечают, какие решения приняли самостоятельно, а где использовали помощь ИИ.</p>
+  </div>
+</section>
+
+<!-- ЗАДАНИЯ -->
+<section id="tasks">
+  <h2><span class="num">6</span> Примеры заданий для уроков</h2>
+  
+  <h3>📝 Задание 1. «Нейросеть — мой помощник в Python»</h3>
+  <p><strong>Тема:</strong> условный оператор в Python.</p>
+  <p><strong>Цель:</strong> научиться создавать и анализировать простую программу с помощью нейросети.</p>
+  <p><strong>Пример запроса:</strong></p>
+  <div class="code-block">
+<span class="str">"Напиши программу на Python, которая принимает целое число и определяет, чётное оно или нечётное. Используй оператор if. Объясни код простыми словами и предложи три примера проверки."</span>
+  </div>
+  <p><strong>Пример программы:</strong></p>
+  <div class="code-block">
+<span class="com"># Определение чётности числа</span>
+<span class="kw">number</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Введите целое число: "</span>))
+<span class="kw">if</span> number % <span class="num">2</span> == <span class="num">0</span>:
+    <span class="fn">print</span>(<span class="str">"Число чётное"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Число нечётное"</span>)
+  </div>
+
+  <h3>🔧 Задание 2. «Найди ошибку в коде»</h3>
+  <p><strong>Тема:</strong> отладка программ.</p>
+  <p><strong>Исходный код с ошибкой:</strong></p>
+  <div class="code-block">
+<span class="kw">number</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Введите число: "</span>))
+<span class="kw">if</span> number % <span class="num">2</span> = <span class="num">0</span>:    <span class="com"># ← ОШИБКА: = вместо ==</span>
+    <span class="fn">print</span>(<span class="str">"Чётное"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Нечётное"</span>)
+  </div>
+  <p><strong>Правильное условие:</strong> <code>if number % 2 == 0:</code></p>
+  <p><strong>Результат:</strong> понимание различия между присваиванием (<code>=</code>) и сравнением (<code>==</code>).</p>
+
+  <h3>🎨 Задание 3. «Создай цифровой арт: школа будущего»</h3>
+  <p><strong>Пример промпта:</strong></p>
+  <div class="code-block">
+<span class="str">"Создай цифровую иллюстрацию современной школы будущего. Покажи интерактивные классы, роботов-помощников, зелёные зоны, солнечные панели. Используй яркую цветовую гамму, дружелюбную атмосферу и детализированный цифровой стиль."</span>
+  </div>
+
+  <h3>🐢 Задание 4. «От геометрии к цифровому искусству»</h3>
+  <p><strong>Тема:</strong> циклы и графические алгоритмы (библиотека <code>turtle</code>).</p>
+  <div class="code-block">
+<span class="kw">import</span> turtle
+pen = turtle.<span class="fn">Turtle</span>()
+pen.<span class="fn">speed</span>(<span class="num">0</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">36</span>):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(<span class="num">4</span>):
+        pen.<span class="fn">forward</span>(<span class="num">100</span>)
+        pen.<span class="fn">right</span>(<span class="num">90</span>)
+    pen.<span class="fn">right</span>(<span class="num">10</span>)
+turtle.<span class="fn">done</span>()
+  </div>
+
+  <h3>🌐 Задание 5. Мини-проект «Мой цифровой мир»</h3>
+  <p>Проект должен содержать: название и идею, изображение от нейросети, фрагмент программы, описание инструментов, пояснение проверки и доработки.</p>
+</section>
+
+<!-- АНАЛИЗАТОР ПРОМПТОВ -->
+<section id="prompt">
+  <h2><span class="num">7</span> 🤖 Интерактив: Анализатор промптов</h2>
+  <p>Проверьте качество своего запроса к нейросети по трём критериям идеального промпта: <strong>Роль</strong>, <strong>Контекст</strong>, <strong>Ограничения/Формат</strong>.</p>
+  
+  <div class="prompt-analyzer">
+    <label><strong>Введите ваш промпт:</strong></label>
+    <textarea id="promptInput" placeholder="Например: Ты — опытный Python-разработчик. Напиши программу на Python для вычисления ИМТ с комментариями на русском языке. Используй только встроенные функции.">Ты — опытный Python-разработчик. Напиши программу на Python для вычисления ИМТ с комментариями на русском языке. Используй только встроенные функции.</textarea>
+    <button onclick="analyzePrompt()">🔍 АНАЛИЗИРОВАТЬ ПРОМПТ</button>
+    <div id="promptResult" class="prompt-result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- КАЛЬКУЛЯТОР ИМТ -->
+<section id="imt">
+  <h2><span class="num">8</span> 💪 Интерактив: Калькулятор ИМТ (результат работы программы)</h2>
+  <p>Пример работающей программы, которую учащиеся создают с помощью нейросети (Задание 1 из раздела «Практика»).</p>
+  
+  <div class="imt-calc">
+    <label><strong>Рост (см):</strong></label>
+    <input type="number" id="height" value="175" min="100" max="250">
+    <label><strong>Вес (кг):</strong></label>
+    <input type="number" id="weight" value="70" min="20" max="300">
+    <button onclick="calcIMT()">📊 Рассчитать ИМТ</button>
+    <div id="imtResult" class="imt-result">Нажмите кнопку для расчёта</div>
+  </div>
+  
+  <h3>Соответствующий код на Python:</h3>
+  <div class="code-block">
+<span class="com"># Калькулятор индекса массы тела</span>
+height = <span class="fn">float</span>(<span class="fn">input</span>(<span class="str">"Рост (см): "</span>)) / <span class="num">100</span>
+weight = <span class="fn">float</span>(<span class="fn">input</span>(<span class="str">"Вес (кг): "</span>))
+imt = weight / (height ** <span class="num">2</span>)
+
+<span class="kw">if</span> imt &lt; <span class="num">18.5</span>:
+    <span class="fn">print</span>(<span class="str">"Недостаточный вес"</span>)
+<span class="kw">elif</span> imt &lt; <span class="num">25</span>:
+    <span class="fn">print</span>(<span class="str">"Нормальный вес"</span>)
+<span class="kw">elif</span> imt &lt; <span class="num">30</span>:
+    <span class="fn">print</span>(<span class="str">"Избыточный вес"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Ожирение"</span>)
+  </div>
+</section>
+
+<!-- ХОД ЗАНЯТИЯ -->
+<section id="lesson">
+  <h2><span class="num">9</span> 📚 Сценарий практического занятия (45 мин)</h2>
+  <p><strong>Тема:</strong> «Нейросети на уроке информатики: создаём код и цифровой арт»</p>
+  <p><strong>Форма проведения:</strong> практическое занятие с элементами исследования и проектной деятельности.</p>
+  
+  <table class="lesson-table">
+    <thead>
+      <tr><th>Этап</th><th>Деятельность</th><th>Время</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Орг. момент</strong></td><td>Приветствие, постановка цели</td><td>2 мин</td></tr>
+      <tr><td><strong>Мотивация</strong></td><td>Обсуждение возможностей и ограничений ИИ</td><td>5 мин</td></tr>
+      <tr><td><strong>Теория</strong></td><td>Промпт-инжиниринг: роль, контекст, ограничения</td><td>7 мин</td></tr>
+      <tr><td><strong>Практика №1</strong></td><td>Создание и проверка программы на Python</td><td>12 мин</td></tr>
+      <tr><td><strong>Практика №2</strong></td><td>Создание цифрового арта по промпту</td><td>12 мин</td></tr>
+      <tr><td><strong>Представление</strong></td><td>Демонстрация работ и обсуждение</td><td>5 мин</td></tr>
+      <tr><td><strong>Рефлексия</strong></td><td>Самооценка и подведение итогов</td><td>2 мин</td></tr>
+      <tr style="background:rgba(139,92,246,0.2);font-weight:bold"><td>ИТОГО</td><td></td><td>45 мин</td></tr>
+    </tbody>
+  </table>
+
+  <h3>🗣️ Вопросы для мотивации:</h3>
+  <ul>
+    <li>Может ли нейросеть написать программу вместо человека?</li>
+    <li>Всегда ли сгенерированный код работает правильно?</li>
+    <li>Чем отличается создание изображения человеком от генерации нейросетью?</li>
+    <li>Почему результат работы ИИ необходимо проверять?</li>
+  </ul>
+
+  <h3>🪞 Рефлексия (учащиеся завершают фразы):</h3>
+  <ul>
+    <li>«Сегодня я научился(ась)…»</li>
+    <li>«Нейросеть помогла мне…»</li>
+    <li>«Мне пришлось самостоятельно проверить…»</li>
+    <li>«В следующий раз я хочу попробовать…»</li>
+  </ul>
+</section>
+
+<!-- ПАМЯТКА -->
+<section id="tips">
+  <h2><span class="num">10</span> 📌 Памятка ученика: как правильно общаться с ИИ</h2>
+  
+  <div class="tip-box">
+    <h4>✨ Правило идеального промпта</h4>
+    <p><strong>1. Роль:</strong> «Ты — опытный Python-разработчик…»</p>
+    <p><strong>2. Контекст:</strong> «Мне нужно написать игру "Угадай число"…»</p>
+    <p><strong>3. Ограничения/Формат:</strong> «Напиши код с комментариями, не используй сложные библиотеки»</p>
+  </div>
+
+  <div class="tip-box">
+    <h4>💡 Практические советы</h4>
+    <p><strong>🎯 Будьте конкретными:</strong> вместо «Напиши код для игры» пишите «Напиши текстовую игру на Python, где игрок выбирает один из трёх вариантов хода».</p>
+    <p><strong>🎨 Задавайте стиль:</strong> для картинок указывайте: «в стиле пиксель-арт», «аниме», «фотореализм», «маслом».</p>
+    <p><strong>🌍 Управляйте языком:</strong> если код выдаёт комментарии на английском, добавьте в промпт: «Пиши комментарии строго на русском языке».</p>
+  </div>
+</section>
+
+<!-- ОЦЕНИВАНИЕ -->
+<section id="eval">
+  <h2><span class="num">11</span> 📊 Система оценивания (10 баллов)</h2>
+  <table class="eval-table">
+    <thead>
+      <tr><th>Критерий</th><th>Максимум</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Соответствие результата поставленной задаче</td><td>3 балла</td></tr>
+      <tr><td>Понимание алгоритма или принципов создания изображения</td><td>3 балла</td></tr>
+      <tr><td>Проверка, исправление ошибок и самостоятельная доработка</td><td>2 балла</td></tr>
+      <tr><td>Творческий подход и представление результата</td><td>2 балла</td></tr>
+      <tr style="background:rgba(139,92,246,0.2);font-weight:bold"><td>ИТОГО</td><td>10 баллов</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Интерпретация результатов:</h3>
+  <div class="grid">
+    <div class="card">
+      <h4 style="color:var(--success)">🏆 9–10 баллов</h4>
+      <p>Задача выполнена качественно, учащийся понимает процесс и способен объяснить свои решения.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--accent2)">✅ 7–8 баллов</h4>
+      <p>Задача выполнена, основные принципы освоены, имеются отдельные недочёты.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warning)">⚠️ 5–6 баллов</h4>
+      <p>Результат достигнут частично, требуется дополнительная помощь.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--danger)">🔄 Менее 5 баллов</h4>
+      <p>Необходимо повторить ключевые понятия и организовать дополнительную практику.</p>
+    </div>
+  </div>
+</section>
+
+<!-- БЕЗОПАСНОСТЬ -->
+<section id="safety">
+  <h2><span class="num">12</span> 🛡️ Цифровая безопасность и этика</h2>
+  
+  <div class="safety-box">
+    <h4 style="color:var(--danger)">🔐 Защита персональных данных</h4>
+    <p>Учащиеся <strong>не должны</strong> вводить в запросы пароли, адреса, номера телефонов, личные данные одноклассников и другую конфиденциальную информацию.</p>
+  </div>
+  
+  <div class="safety-box">
+    <h4 style="color:var(--danger)">🔎 Проверка результатов</h4>
+    <p>Код необходимо запускать и тестировать, а фактическую информацию — проверять по надёжным источникам. ИИ часто «галлюцинирует»!</p>
+  </div>
+  
+  <div class="safety-box">
+    <h4 style="color:var(--danger)">📜 Авторство и академическая честность</h4>
+    <p>При использовании сгенерированных материалов учащийся должен уметь объяснить свою работу и указать применение ИИ.</p>
+  </div>
+  
+  <div class="safety-box">
+    <h4 style="color:var(--danger)">🔞 Возрастные ограничения</h4>
+    <p>Необходимо учитывать возрастные требования выбранного сервиса, условия регистрации и правила использования аккаунтов.</p>
+  </div>
+  
+  <div class="safety-box">
+    <h4 style="color:var(--danger)">🤝 Равный доступ</h4>
+    <p>Если не все учащиеся имеют устройства или доступ к сервису, следует предусмотреть работу в парах или альтернативные задания без регистрации.</p>
+  </div>
+</section>
+
+<!-- ИСТОЧНИКИ -->
+<section>
+  <h2><span class="num">13</span> 📚 Список источников</h2>
+  <ol>
+    <li>UNESCO. <em>Guidance for Generative AI in Education and Research.</em> Paris: UNESCO, 2023.</li>
+    <li>UNESCO. <em>AI Competency Framework for Students.</em> Paris: UNESCO, 2024.</li>
+    <li>Python Software Foundation. <em>Python Documentation.</em> https://docs.python.org/3/</li>
+    <li>Scratch Foundation. <em>Scratch — Creative Computing.</em> https://scratch.mit.edu/</li>
+    <li>OpenAI. <em>Официальные материалы и рекомендации по использованию ChatGPT.</em> https://help.openai.com/</li>
+    <li>Материалы образовательной организации по цифровой грамотности и информационной безопасности.</li>
+  </ol>
+</section>
+
+<!-- ЗАКЛЮЧЕНИЕ -->
+<section style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(6,182,212,0.2));border:2px solid var(--neon)">
+  <h2 style="border:none">💎 Главный методический вывод</h2>
+  <p style="font-size:1.2rem;text-align:center;color:var(--neon);font-weight:bold;margin:20px 0">
+    «Нейросеть должна не выполнять учебную работу вместо ученика,<br>
+    а помогать ему учиться думать, программировать,<br>
+    экспериментировать и создавать.»
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p><strong>© 2026 | Уаисова Алия Токеновна</strong></p>
+  <p>КГУ «Средняя общеобразовательная школа №30 г. Павлодара»</p>
+  <p>Электронное пособие для участия в конкурсе «Педагогические инициативы-2026»</p>
+  <p style="margin-top:10px">📧 <a href="mailto:aliyatz@mail.ru" style="color:var(--neon)">aliyatz@mail.ru</a></p>
+</footer>
+
+<script>
+// Анализатор промптов
+function analyzePrompt(){
+  const text = document.getElementById('promptInput').value.trim().toLowerCase();
+  const resultDiv = document.getElementById('promptResult');
+  
+  if(!text){
+    resultDiv.style.display='block';
+    resultDiv.innerHTML='<p style="color:var(--danger)">⚠️ Введите текст промпта!</p>';
+    return;
+  }
+  
+  // Критерии
+  const roleWords = ['ты —','ты -','как ','в роли','представь себя','действуй как','роль:','специалист','эксперт','разработчик','учитель','учёный','дизайнер','программист','python','python-'];
+  const contextWords = ['нужно','необходимо','задача','цель','проблема','создать','написать','сделать','разработать','помоги','мне нужно','для того чтобы','чтобы'];
+  const formatWords = ['формат','стиль','на русском','на казахском','на английском','без','не используй','используй','комментарии','пример','пошагово','с объяснением','подробно','кратко','структурированно','в виде','список','таблица','код','программа','не более','не менее','объём','длина','ограничени'];
+  
+  const hasRole = roleWords.some(w => text.includes(w));
+  const hasContext = contextWords.some(w => text.includes(w));
+  const hasFormat = formatWords.some(w => text.includes(w));
+  
+  let score = 0;
+  if(hasRole) score++;
+  if(hasContext) score++;
+  if(hasFormat) score++;
+  
+  const length = text.length;
+  let lengthBonus = '';
+  if(length < 30) lengthBonus = '<p style="color:var(--warning)">⚠️ Промпт слишком короткий. Добавьте больше деталей.</p>';
+  else if(length > 100) lengthBonus = '<p style="color:var(--success)">✅ Хорошая длина промпта — достаточно деталей.</p>';
+  
+  let grade = '';
+  let gradeColor = '';
+  if(score === 3){ grade = '🏆 ОТЛИЧНО! Идеальный промпт'; gradeColor = 'var(--success)'; }
+  else if(score === 2){ grade = '✅ ХОРОШО, но можно улучшить'; gradeColor = 'var(--accent2)'; }
+  else if(score === 1){ grade = '⚠️ СЛАБО. Нужно доработать'; gradeColor = 'var(--warning)'; }
+  else { grade = '❌ ОЧЕНЬ СЛАБО. Промпт неструктурирован'; gradeColor = 'var(--danger)'; }
+  
+  resultDiv.style.display='block';
+  resultDiv.innerHTML = `
+    <h4 style="color:var(--neon)">📋 Результат анализа:</h4>
+    <div class="check-item ${hasRole?'ok':'no'}">
+      ${hasRole?'✅':'❌'} <strong>Роль:</strong> ${hasRole?'роль задана':'укажите, кем должна быть нейросеть (напр. "Ты — опытный Python-разработчик...")'}
+    </div>
+    <div class="check-item ${hasContext?'ok':'no'}">
+      ${hasContext?'✅':'❌'} <strong>Контекст:</strong> ${hasContext?'задача описана':'укажите цель и задачу (напр. "Мне нужно написать программу...")'}
+    </div>
+    <div class="check-item ${hasFormat?'ok':'no'}">
+      ${hasFormat?'✅':'❌'} <strong>Ограничения/Формат:</strong> ${hasFormat?'формат указан':'добавьте требования к результату (напр. "с комментариями на русском")'}
+    </div>
+    ${lengthBonus}
+    <div class="score" style="color:${gradeColor}">Оценка: ${score}/3 — ${grade}</div>
+  `;
+}
+
+// Калькулятор ИМТ
+function calcIMT(){
+  const h = parseFloat(document.getElementById('height').value);
+  const w = parseFloat(document.getElementById('weight').value);
+  const res = document.getElementById('imtResult');
+  
+  if(!h || !w || h<100 || w<20){
+    res.innerHTML='<span style="color:var(--danger)">⚠️ Введите корректные данные</span>';
+    return;
+  }
+  
+  const hm = h/100;
+  const imt = (w / (hm*hm)).toFixed(1);
+  
+  let category='', color='';
+  if(imt<18.5){ category='Недостаточный вес'; color='var(--accent2)'; }
+  else if(imt<25){ category='✅ Нормальный вес'; color='var(--success)'; }
+  else if(imt<30){ category='Избыточный вес'; color='var(--warning)'; }
+  else { category='Ожирение'; color='var(--danger)'; }
+  
+  res.innerHTML = `
+    <p><strong>Ваш ИМТ:</strong> <span style="color:var(--neon);font-size:1.5rem">${imt}</span></p>
+    <p><strong>Категория:</strong> <span style="color:${color};font-weight:bold">${category}</span></p>
+    <p style="color:var(--muted);font-size:0.9rem;margin-top:10px">Формула: ИМТ = вес(кг) / рост(м)²</p>
+  `;
+}
+</script>
+
+</body>
+</html>
